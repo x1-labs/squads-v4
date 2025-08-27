@@ -18,7 +18,7 @@
           "isMut": true,
           "isSigner": true,
           "docs": [
-            "The hard-coded account that is used to initialize the program config once."
+            "The account that pays for the initialization."
           ]
         },
         {

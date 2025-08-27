@@ -1,16 +1,6 @@
-use crate::errors::MultisigError;
 use anchor_lang::prelude::*;
-use anchor_lang::solana_program::pubkey;
 
 use crate::state::*;
-
-/// This is a key controlled by the Squads team and is intended to use for the single
-/// transaction that initializes the global program config. It is not used for anything else.
-#[cfg(not(feature = "testing"))]
-const INITIALIZER: Pubkey = pubkey!("HM5y4mz3Bt9JY9mr1hkyhnvqxSH4H2u2451j7Hc2dtvK");
-
-#[cfg(feature = "testing")]
-const INITIALIZER: Pubkey = pubkey!("BrQAbGdWQ9YUHmWWgKFdFe4miTURH71jkYFPXfaosqDv");
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct ProgramConfigInitArgs {
@@ -33,11 +23,8 @@ pub struct ProgramConfigInit<'info> {
     )]
     pub program_config: Account<'info, ProgramConfig>,
 
-    /// The hard-coded account that is used to initialize the program config once.
-    #[account(
-        mut,
-        address = INITIALIZER @ MultisigError::Unauthorized
-    )]
+    /// The account that pays for the initialization.
+    #[account(mut)]
     pub initializer: Signer<'info>,
 
     pub system_program: Program<'info, System>,
